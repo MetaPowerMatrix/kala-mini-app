@@ -1,6 +1,6 @@
 {
     "canisters": {
-      "metapowermatrix": {
+      "minishop": {
         "frontend": {
           "entrypoint": "out/index.html"
         },
