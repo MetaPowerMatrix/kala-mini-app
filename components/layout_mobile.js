@@ -16,7 +16,7 @@ import commandDataContainer from "@/container/command";
 import AIVoice from "@/components/AIVoice";
 import MobileFramework from "@/components/MobileFramework";
 
-export default function LayoutMobile({ title, description, onChangeId, onRefresh }) {
+export default function LayoutMobile({children, title, description, onChangeId, onRefresh }) {
     const [availableIds, setAvailableIds] = useState([]);
     const [isLogin, setIsLogin] = useState(false);
     const [activeId, setActiveId] = useState("");
