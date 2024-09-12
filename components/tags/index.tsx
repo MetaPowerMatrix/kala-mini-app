@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Button, Col, Row, Tag } from 'antd'
+import { Tag } from 'antd'
 
-const TagsComponent = ({ tags, myTags }:{tags: string[], myTags: (tags: string[])=>void}) =>{
+const TagsComponent = ({ tags, myTags, height=80 }:{tags: string[], myTags: (tags: string[])=>void, height?: number}) =>{
 	const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
 	const handleTagChange = (tag: string, checked: boolean) => {
@@ -15,7 +15,7 @@ const TagsComponent = ({ tags, myTags }:{tags: string[], myTags: (tags: string[]
 
 	return (
 		<>
-			<div style={{ height: 120, overflow: 'scroll', width: '100%' }}>
+			<div style={{ height: height, overflow: 'scroll', width: '100%' }}>
 				{tags.map<React.ReactNode>((tag) => (
 					<Tag.CheckableTag
 						key={tag}

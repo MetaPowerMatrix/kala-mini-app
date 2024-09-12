@@ -15,6 +15,7 @@ import TownMobile from "@/components/town";
 import commandDataContainer from "@/container/command";
 import AIVoice from "@/components/AIVoice";
 import MobileFramework from "@/components/MobileFramework";
+import SplashScreen from "@/components/SplashScreen";
 
 export default function LayoutMobile({children, title, description, onChangeId, onRefresh }) {
     const [availableIds, setAvailableIds] = useState([]);
@@ -25,6 +26,7 @@ export default function LayoutMobile({children, title, description, onChangeId, 
     const [activeTab, setActivTab] = useState('chat');
     const [query, setQuery] = useState("emm，我们聊些什么呢...");
     const [start, setStart] = useState(false);
+    const [showSplash, setShowSplash] = useState(true);
 
     const t = useTranslations('Login');
     const command = commandDataContainer.useContainer()
@@ -45,6 +47,12 @@ export default function LayoutMobile({children, title, description, onChangeId, 
     const stop_record = (startStop) => {
         setStart(startStop)
     }
+
+    useEffect(() => {
+        setTimeout(() => {
+            setShowSplash(false)
+        }, 3000)
+    }, [])
 
     useEffect(() => {
         const localInfoStr = localStorage.getItem("local_patos")
@@ -96,7 +104,7 @@ export default function LayoutMobile({children, title, description, onChangeId, 
 
     const tabs =[
         {label: t('messages'), key:"chat", icon: <CommentOutlined/>},
-        {label: t("town"), key:"town", icon: <ShopOutlined style={{fontSize:18, color:"#eeb075"}} />},
+        {label: t("discovery"), key:"discovery", icon: <ShopOutlined style={{fontSize:18, color:"#eeb075"}} />},
         {label: t("mine"), key:"mine", icon: <UserOutlined />}
     ]
 
@@ -106,7 +114,7 @@ export default function LayoutMobile({children, title, description, onChangeId, 
                 {key === 'chat' &&
                     <MobileFramework ctrlVoiceStart={stop_record} query={query} name={activeName} activeId={activeId}/>
                 }
-                {key === 'town' &&
+                {key === 'discovery' &&
                     <TownMobile ctrlVoiceStart={stop_record} query={query} name={activeName} id={activeId} onShowProgress={showProgressBar} />
                 }
                 {key === 'mine' &&
@@ -127,32 +135,35 @@ export default function LayoutMobile({children, title, description, onChangeId, 
                 <meta name="og:title" content={title}/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
             </Head>
-            {isLogin ?
-                <>
-                    <AIVoice activeId={activeId} process_ws_message={process_ws_message} startStop={start}/>
-                    <Tabs
-                        destroyInactiveTabPane={false}
-                        tabBarGutter={60}
-                        centered
-                        size={"middle"}
-                        type={"line"}
-                        animated={true}
-                        tabPosition="bottom"
-                        activeKey={activeTab}
-                        onChange={(key)=>setActivTab(key)}
-                        items={tabs.map((tab) => {
-                            return {
-                                label: tab.label,
-                                key: tab.key,
-                                children: content(tab.key),
-                                icon:tab.icon
-                            };
-                        })}
-                    />
-                </>
-                :
-                null
+            {
+                showSplash ? <SplashScreen /> :
+                    isLogin ?
+                            <>
+                                <AIVoice activeId={activeId} process_ws_message={process_ws_message} startStop={start}/>
+                                <Tabs
+                                    destroyInactiveTabPane={false}
+                                    tabBarGutter={60}
+                                    centered
+                                    size={"middle"}
+                                    type={"line"}
+                                    animated={true}
+                                    tabPosition="bottom"
+                                    activeKey={activeTab}
+                                    onChange={(key)=>setActivTab(key)}
+                                    items={tabs.map((tab) => {
+                                        return {
+                                            label: tab.label,
+                                            key: tab.key,
+                                            children: content(tab.key),
+                                            icon:tab.icon
+                                        };
+                                    })}
+                                />
+                            </>
+                            :
+                            null
             }
+
             <ProgressBarComponent visible={loading} steps={15} />
             <ModalLogin mobile={true} isOpen={!isLogin} tips={t} options={availableIds}
                 onClose={(id) => {

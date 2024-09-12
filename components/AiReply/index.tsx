@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, Col, Row} from "antd";
+import {Card} from "antd";
 import Meta from "antd/es/card/Meta";
 import {MessageCategory} from "@/common";
 
@@ -7,17 +7,17 @@ const CardReply = ({imageUrl, message}:{message: string, imageUrl: string}) => {
 	return (
 		<>
 			<Card
-				style={{ width: 240, boxShadow: "0 0 20px #79c5c5aa", marginLeft: "auto"}}
-				cover={<img height={60} alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+				style={{ width: 240, boxShadow: "0 0 5px #79c5c5aa", marginLeft: "auto"}}
+				cover={<img height={60} alt="example" src={imageUrl} />}
 			>
-				<Meta description={imageUrl} />
+				<Meta description={message} />
 			</Card>
 		</>
 	);
 }
 const HumanQuestion = ({message}:{message: string}) => {
 	return (
-		<Card style={{ width: 240, boxShadow: "0 0 10px #79c5c5aa" }}>
+		<Card style={{ width: 240, boxShadow: "0 0 5px #79c5c5aa" }}>
 			<Meta description={message} />
 		</Card>
 	);

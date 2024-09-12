@@ -1,0 +1,13 @@
+.modal {
+    max-width: 430px;
+    height: 900px;
+    overflow: hidden;
+}
+
+.logo {
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 20%;
+    justify-content: center;
+}

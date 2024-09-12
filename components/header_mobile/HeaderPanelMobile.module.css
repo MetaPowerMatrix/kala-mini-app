@@ -2,11 +2,13 @@
     height: 660px;
 }
 .header_panel_mobile_info{
-    height: 500px;
+    height: 530px;
     overflow: scroll;
 }
 .header_user{
-    padding: 20px;
+    padding: 15px;
+    background-color: #79c5c5;
+    height: 170px;
 }
 .header_meta{
     background-color: #e9f5f9;

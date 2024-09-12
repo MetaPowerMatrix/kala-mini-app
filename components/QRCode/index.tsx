@@ -9,13 +9,10 @@ import {KolInfo} from "@/common";
 import BuyKolComponent from "@/components/BuyKol";
 
 interface QRCodeProps {
-	visible: boolean;
 	id: string,
-	onClose: ()=>void;
-	mobile: boolean;
 }
 
-const QRCodeComponent: React.FC<QRCodeProps> = ({visible, id, onClose, mobile}) => {
+const QRCodeComponent: React.FC<QRCodeProps> = ({id}) => {
 	const t = useTranslations('others');
 	const [token, setToken] = React.useState<string>('');
 	const [reload, setReload] = useState<number>(0)
@@ -50,13 +47,7 @@ const QRCodeComponent: React.FC<QRCodeProps> = ({visible, id, onClose, mobile}) 
 	};
 
 	return (
-		<div hidden={!visible} className={styles.qrcode_container}>
-			<div className={ mobile ? styles.qrcode_content_mobile : styles.qrcode_content}>
-				<Row>
-					<Col span={8}>
-						<CloseOutlined style={{color: "black", fontSize: 20}} onClick={() => onClose()}/>
-					</Col>
-				</Row>
+			<div className={ styles.qrcode_content_mobile }>
 				{
 					isKol ?
 						<>
@@ -85,7 +76,6 @@ const QRCodeComponent: React.FC<QRCodeProps> = ({visible, id, onClose, mobile}) 
 							</a>
 						</div>
 				}
-			</div>
 			<BuyKolComponent id={id} room_id={''}
 			                 onClose={()=> {
 												 setReload(reload+1)

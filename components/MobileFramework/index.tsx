@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import gsap from 'gsap';
 import styles from './MobileFramework.module.css';
 import {AudioOutlined, FileImageOutlined, PauseOutlined, SendOutlined, TagsOutlined} from "@ant-design/icons";
@@ -7,22 +7,25 @@ import {useTranslations} from "next-intl";
 import commandDataContainer from "../../container/command";
 import {api_url, getApiServer, MessageCategory} from "@/common";
 import TagsComponent from "@/components/tags";
-import AiReplyComponent from "@/components/AiReply";
+import ChatListComponet from "@/components/ChatList";
 
 interface AIReply {
     message: string,
     imageUrl: string,
-    category: MessageCategory
+    category: MessageCategory,
+    status: string
 }
-const defaultAiReply: AIReply = {
-    message: "loading...",
-    imageUrl: "loading...",
-    category: MessageCategory.Human
+const defaultReply: AIReply = {
+    message: "...",
+    imageUrl: "...",
+    category: MessageCategory.Human,
+    status: "enter"
 }
 const aiCharacterTags: string[] = ["情感", "历史", "游戏", "婚恋", "科技", "投资", "职业", "音乐", "助手"]
 
 const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, activeId: string, query: string, ctrlVoiceStart: (startStop: boolean)=>void}) => {
     const headerRef = useRef(null);
+    const listRef = useRef();
     const promptInputRef = useRef(null);
     const [stopped, setStopped] = useState<boolean>(true);
     const [queryText, setQueryText] = useState<string>(query)
@@ -42,26 +45,6 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
     }, []);
 
     useEffect(() => {
-        let ctx = gsap.context(() => {
-            gsap.from(".answer", {
-                opacity: 0,
-                stagger: 0.2,
-                x: 200,
-                duration: 1,
-                delay: 1
-            });
-            gsap.from(".question", {
-                opacity: 0,
-                stagger: 0.2,
-                x: -200,
-                duration: 1,
-                delay: 1
-            });
-        });
-        return () => ctx.revert();
-    }, [aiReplies]);
-
-    useEffect(() => {
         setQueryText(query)
     }, [query])
 
@@ -79,9 +62,11 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
         let reply: AIReply = {
             message: topic,
             imageUrl: topic,
-            category: MessageCategory.Human
+            category: MessageCategory.Human,
+            status: "enter"
         }
         setAiReplies((aiReplies) => [...aiReplies, reply])
+        listRef.current.addItem(reply)
 
         const data = {id: activeId, message: topic, pro: pro};
         let url = getApiServer(80) + api_url.portal.interaction.instruct
@@ -100,9 +85,11 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                     let reply: AIReply = {
                         message: data.content,
                         imageUrl: data.content,
-                        category: MessageCategory.Card
+                        category: MessageCategory.Card,
+                        status: "enter"
                     }
                     setAiReplies((aiReplies) => [...aiReplies, reply])
+                    listRef.current.addItem(reply)
                 }
             })
             .catch((error) => {
@@ -149,7 +136,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                               <Popover
                                 placement={"bottomLeft"}
                                 content={
-                                    <div style={{width: 270, overflowY: "scroll", height: 120}}>
+                                    <div style={{width: 270}}>
                                         <TagsComponent tags={aiCharacterTags} myTags={(tags) => { setSelectedTags(tags) }}/>
                                     </div>
                                 }
@@ -179,16 +166,17 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                   </div>
               </div>
           </div>
-          <div style={{height: 397, padding:10, marginTop:100, overflow: "scroll"}}>
-              {
-                  aiReplies.map((reply, index) => {
-                      return (
-                        <div key={index} className={reply.category===MessageCategory.Human ? "question" : "answer"} style={{marginTop:30}}>
-                            <AiReplyComponent message={reply.message} imageUrl={reply.imageUrl} category={reply.category}/>
-                        </div>
-                      )
-                  })
-              }
+          <div style={{height: 428, marginTop: 70}}>
+              <ChatListComponet ref={listRef} />
+            {/*{*/}
+            {/*  aiReplies.map((reply, index) => {*/}
+            {/*      return (*/}
+            {/*          <div key={index} className={reply.category === MessageCategory.Human ? "question" : "answer"} style={{marginTop: 30}}>*/}
+            {/*              <AiReplyComponent message={reply.message} imageUrl={reply.imageUrl} category={reply.category}/>*/}
+            {/*          </div>*/}
+            {/*      )*/}
+            {/*  })*/}
+            {/*}*/}
           </div>
       </>
     );

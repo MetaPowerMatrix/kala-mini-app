@@ -47,10 +47,10 @@
     "submit": "提交"
   },
   "Login": {
-    "notLoginTips": "在原力小镇成为一个聪明的Pato",
+    "notLoginTips": "卡拉是AI智能体，她可以和你聊聊新疆的人文历史，自然风貌，还能帮你选择最具性价比的新疆特产",
     "nameOption": "选择一个身份登陆",
     "nameCreate": "注册一个身份",
-    "buttonLogin": "切换P账号",
+    "buttonLogin": "切换账号",
     "buttonRegister": "创建账号",
     "loginSelect": "选择账号",
     "loginCreate": "起个名字就可以了",
@@ -62,7 +62,7 @@
     "pro": "专业",
     "name_tips": "给你的Pato起一个响亮的名字吧！",
     "train": "学习",
-    "messages": "Pato",
+    "messages": "聊天",
     "town": "小镇",
     "discovery": "发现",
     "mine": "我的",

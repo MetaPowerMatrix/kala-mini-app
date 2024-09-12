@@ -1,17 +1,85 @@
 import React, {useEffect, useRef, useState} from "react";
-import {Col, Modal, Row, List, Button, Tabs} from "antd";
+import {Col, Modal, Row, Button, Tabs} from "antd";
 import styles from "./KolTownComponent.module.css";
-import {
-	BankOutlined,
-	ExperimentOutlined,
-	LoginOutlined
-} from "@ant-design/icons";
-import {KolInfo, Streaming_Server} from "@/common";
+import {KolInfo} from "@/common";
 import {useTranslations} from "next-intl";
 import commandDataContainer from "@/container/command";
 import AIInstructMobileComponent from "@/components/AIInstructMobile";
 import BuyKolComponent from "@/components/BuyKol";
+import Waterfall from 'waterfalljs-layout/react';
 
+const customStyleGrid = `#react-waterfall-grid-comps li>div {
+	  overflow: hidden;
+	  border-radius: 10px;
+	  background: rgb(255, 255, 255);
+	  transition: all 0.5s
+	}
+	#react-waterfall-grid-comps li>div:hover {
+	  transform: translateY(-6px);
+	  box-shadow: 0 30px 50px rgba(0, 0, 0, 0.3);
+	  transition: all 0.3s
+	}
+	#react-waterfall-grid-comps li>div>img {
+	  width: 100%;
+	  border-radius: 10px;
+	}`;
+
+const RoomList = ({rooms, mine}:{rooms:KolInfo[], mine:boolean}) => {
+	const images = [
+		{ id: 1, url: 'images/yuanweihua.jpeg', title: '鸢尾花' },
+		{ id: 2, url: 'images/chunxiao.jpg', title: "春晓" },
+		{ id: 3, url: 'images/two-poets.png', title: '诗人' },
+		{ id: 4, url: 'images/splash_image.jpg', title: '海底' },
+		{ id: 5, url: 'images/background.jpeg', title: "异星" },
+		{ id: 1, url: 'images/yuanweihua.jpeg', title: '鸢尾花' },
+		{ id: 2, url: 'images/chunxiao.jpg', title: "春晓" },
+		{ id: 3, url: 'images/two-poets.png', title: '诗人' },
+		{ id: 4, url: 'images/splash_image.jpg', title: '海底' },
+		{ id: 5, url: 'images/background.jpeg', title: "异星" },
+	];
+	const ulMaxHRef = useRef(0);
+
+	return(
+		<div
+			style={{
+				padding: 15,
+				height: "600px",
+				width: "410px",
+				overflowY: "scroll"
+			}}
+			onScroll={(e) => {
+				const scrollH = e.target.scrollTop;
+				// 700 是一个自己把握的值即满足 scrollTop + height + 调节值 > ulMaxHRef.current
+				// 因为不一定要滚动到在最底端才执行加载逻辑
+				// 注意使用者应自己处理加载节流逻辑
+				if (scrollH + 700 > ulMaxHRef.current) {
+					console.log("滚动到底部执行加载逻辑，代替点击 loadmore 按钮");
+				}
+			}}>
+			<Waterfall
+				mode="grid"
+				el="#react-waterfall-grid-comps"
+				columnWidth={175}
+				columnCount={2}
+				columnGap={20}
+				rowGap={20}
+				customStyle={customStyleGrid}
+				onChangeUlMaxH={(h: number) => (ulMaxHRef.current = h)}
+			>
+				{images.map((item, index) => {
+					return (
+						<li key={index} onClick={() =>{} }>
+							<div style={{textAlign: "center"}}>
+								<img src={item.url} alt="" />
+								<span style={{color: "#eeb075", fontSize: 14}}>{item.title}</span>
+							</div>
+						</li>
+					);
+				})}
+			</Waterfall>
+		</div>
+	)
+}
 
 const KolTownComponent = ({activeId, name, onShowProgress, query, ctrlVoiceStart}: {
 	activeId: string,
@@ -20,7 +88,6 @@ const KolTownComponent = ({activeId, name, onShowProgress, query, ctrlVoiceStart
 	ctrlVoiceStart: (startStop: boolean)=>void;
 	query: string;
 }) => {
-	const [activeTab, setActivTab] = useState('hot');
 	const [roomList, setRoomList] = useState<KolInfo[]>([])
 	const [myRoomList, setMyRoomList] = useState<KolInfo[]>([])
 	const [reload, setReload] = useState<number>(0)
@@ -29,9 +96,9 @@ const KolTownComponent = ({activeId, name, onShowProgress, query, ctrlVoiceStart
 	const [showKolRoom, setShowKolRoom] = useState<boolean>(false)
 	const [buyWhat, setBuyWhat] = useState<string>('kol')
 	const [isKol, setIsKol] = useState<boolean>(false)
-	const [cover, setCover] = useState<string>('')
 	const [kolName, setKolName] = useState<string>('')
 	const [followerIds, setFollowerIds] = useState<string[]>([])
+	const [queryText, setQueryText] = useState<string>("")
 	const t = useTranslations('kol');
 	const command = commandDataContainer.useContainer()
 	const {confirm} = Modal;
@@ -52,101 +119,25 @@ const KolTownComponent = ({activeId, name, onShowProgress, query, ctrlVoiceStart
 		})
 	}, [reload, activeId])
 
-	const RoomList = ({rooms, mine}:{rooms:KolInfo[], mine:boolean}) => {
-		return(
-			<>
-				<List
-					itemLayout="horizontal"
-					size="small"
-					style={{height: 560,overflow:"scroll"}}
-					dataSource={rooms}
-					renderItem={(item, index) => (
-						<List.Item
-							key={index}
-						>
-							<Row align={"middle"} style={{width: "100%"}}>
-								<Col span={8}>
-									<h5 style={{overflow: "scroll"}}>{item.name}</h5>
-								</Col>
-								<Col span={12}>
-									<h5 style={{overflow: "scroll"}}>{item.name}的私聊室</h5>
-								</Col>
-								<Col span={2} style={{textAlign: "end"}}>
-									<LoginOutlined onClick={() => {
-										setRoomId(item.id);
-										setKolName(item.name);
-										setFollowerIds(item.followers);
-										if (mine || activeId === item.id) {
-											setShowKolRoom(true);
-										} else {
-											setBuyWhat('follow');
-											setShowBuyKol(true);
-										}
-									}} />
-								</Col>
-							</Row>
-						</List.Item>
-					)}
-				/>
-				<Row>
-					<Col span={2}></Col>
-					<Col span={20}>
-						<Button style={{width: "100%", fontSize: 16}} type={"primary"} onClick={() => {
-							if (isKol) {
-								Modal.success({
-									content: '你已经购买过密钥了，无需重复购买'
-								})
-							}else {
-								setBuyWhat('kol')
-								setShowBuyKol(true)
-							}
-						}}>+</Button>
-					</Col>
-					<Col span={2}></Col>
-				</Row>
-			</>
-		)
+	const inputQuestion = (event: React.ChangeEvent<HTMLInputElement>) =>{
+		setQueryText(event.target.value)
 	}
-	const tabContent = (key: string) => {
-		return (
-			<>
-				{key === 'hot' &&
-					<RoomList rooms={roomList}  mine={false}/>
-				}
-				{key === 'mine' &&
-					<RoomList rooms={myRoomList} mine={true}/>
-				}
-			</>
-		)
-	}
-	const tabs =[
-		{label: t('hot'), key:"hot", icon: <ExperimentOutlined />},
-		{label: t('mine'), key:"mine", icon: <BankOutlined />},
-	]
 
 	return (
 		<>
 			<div className={styles.kol_town_container}>
 				<div className={styles.kol_town_content}>
-					<Tabs
-						centered
-						tabBarGutter={60}
-						size={"middle"}
-						type={"line"}
-						animated={true}
-						tabPosition="top"
-						activeKey={activeTab}
-						onChange={(key) => setActivTab(key)}
-						items={tabs.map((tab) => {
-							return {
-								label: tab.label,
-								key: tab.key,
-								children: tabContent(tab.key),
-								icon: tab.icon
-							};
-						})}
-					/>
-					<AIInstructMobileComponent query={query} ctrlVoiceStart={ctrlVoiceStart} follower_ids={followerIds} my_name={name} kol_name={kolName} id={activeId} room_id={roomId} visible={showKolRoom} onShowProgress={onShowProgress}
+					<div className={styles.header_search}>
+						{/*<div className={styles.quote}>RANDOM COLORS</div>*/}
+						<h3 className={styles.search_title}>{t('hot')}</h3>
+						<input value={queryText} placeholder={"搜索"}
+						       className={styles.search_input}
+						       onChange={inputQuestion}
+						/>
+					</div>
+					<RoomList rooms={roomList} mine={false}/>
+					<AIInstructMobileComponent query={query} ctrlVoiceStart={ctrlVoiceStart} follower_ids={followerIds}
+					                           my_name={name} kol_name={kolName} id={activeId} room_id={roomId} visible={showKolRoom} onShowProgress={onShowProgress}
                      onClose={()=>setShowKolRoom(false)}/>
 
 					<BuyKolComponent id={activeId} room_id={roomId}
