@@ -6,7 +6,7 @@ import {useTranslations} from "next-intl";
 import commandDataContainer from "@/container/command";
 import AIInstructMobileComponent from "@/components/AIInstructMobile";
 import BuyKolComponent from "@/components/BuyKol";
-import Waterfall from 'waterfalljs-layout/react';
+import Waterfall from "@/components/Waterfall/react";
 
 const customStyleGrid = `#react-waterfall-grid-comps li>div {
 	  overflow: hidden;

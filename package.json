@@ -28,7 +28,6 @@
     "remark-html": "^15.0.1",
     "unstated-next": "^1.1.0",
     "uuid": "^9.0.1",
-    "waterfalljs-layout": "^0.1.0",
     "web3": "^4.8.0",
     "zustand": "^4.5.2"
   },
