@@ -48,7 +48,7 @@ const RoomList = ({rooms, mine}:{rooms:KolInfo[], mine:boolean}) => {
 				overflowY: "scroll"
 			}}
 			onScroll={(e) => {
-				const scrollH = e.target.scrollTop;
+				const scrollH = (e.target as HTMLElement).scrollTop;
 				// 700 是一个自己把握的值即满足 scrollTop + height + 调节值 > ulMaxHRef.current
 				// 因为不一定要滚动到在最底端才执行加载逻辑
 				// 注意使用者应自己处理加载节流逻辑
