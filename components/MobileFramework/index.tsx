@@ -162,7 +162,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                           </Col>
                           <Col span={2}>
                               <SendOutlined style={{color: "black", fontSize: 14, marginLeft: 10}}
-                                            onClick={() => handleVoiceCommand(query, activeId)}/>
+                                            onClick={() => handleVoiceCommand(queryText, activeId)}/>
                           </Col>
                       </Row>
                   </div>
