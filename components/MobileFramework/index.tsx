@@ -66,6 +66,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
             status: "enter"
         }
         setAiReplies((aiReplies) => [...aiReplies, reply])
+        // @ts-ignore
         listRef.current?.addItem(reply)
 
         const data = {id: activeId, message: topic, pro: pro};
@@ -89,6 +90,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                         status: "enter"
                     }
                     setAiReplies((aiReplies) => [...aiReplies, reply])
+                    // @ts-ignore
                     listRef.current?.addItem(reply)
                 }
             })
