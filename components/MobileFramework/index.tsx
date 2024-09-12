@@ -66,7 +66,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
             status: "enter"
         }
         setAiReplies((aiReplies) => [...aiReplies, reply])
-        listRef.current.addItem(reply)
+        listRef.current?.addItem(reply)
 
         const data = {id: activeId, message: topic, pro: pro};
         let url = getApiServer(80) + api_url.portal.interaction.instruct
@@ -89,7 +89,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                         status: "enter"
                     }
                     setAiReplies((aiReplies) => [...aiReplies, reply])
-                    listRef.current.addItem(reply)
+                    listRef.current?.addItem(reply)
                 }
             })
             .catch((error) => {
