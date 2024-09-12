@@ -44,10 +44,10 @@ export default function WaterfallComps({
   }, [])
 
   useEffect(() => {
-    if (children.length) {
+    if (children?.length) {
       wfRef.current?.load?.()
     }
-  }, [children.length])
-  
+  }, [children?.length])
+
   return <ul id={el.slice(1)}>{children}</ul>
 }

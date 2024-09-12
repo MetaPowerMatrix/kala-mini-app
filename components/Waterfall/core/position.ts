@@ -87,7 +87,7 @@ export default class Waterfall {
     }
 
     for (let i = 0; i < this.liNodes.length; i++) {
-      const h = this.liNodes[i].offsetHeight + this.config.rowGap
+      const h = this.liNodes[i].offsetHeight + this.config.rowGap!
       this.itemList.push({
         index: i,
         bottom: h,
@@ -137,7 +137,7 @@ export default class Waterfall {
       for (let j = 0; j < curCol.length; j++) {
         const element = this.liNodes[curCol[j].index]
         const columnGap = i === 0 ? 0 : this.config.columnGap
-        element.style.left = i * this.config.columnWidth + this.liLeft + columnGap + 'px'
+        element.style.left = i * this.config.columnWidth + this.liLeft + columnGap! + 'px'
         element.style.top = curCol[j].bottom - curCol[j].height + 'px'
       }
     }
