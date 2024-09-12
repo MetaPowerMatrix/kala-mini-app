@@ -111,6 +111,8 @@ const ChatListComponent = forwardRef((props, ref) => {
             </div>
         </div>
     );
+
+    ChatListComponent.displayName = "ChatListComponent";
 })
 
 export default ChatListComponent;
