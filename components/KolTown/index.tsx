@@ -7,6 +7,9 @@ import commandDataContainer from "@/container/command";
 import AIInstructMobileComponent from "@/components/AIInstructMobile";
 import BuyKolComponent from "@/components/BuyKol";
 import Waterfall from "@/components/Waterfall/react";
+import AniBannerComponent from "@/components/AniBanner";
+import BlinkingText from "@/components/AniBanner";
+import ChangingColorText from "@/components/AniBanner";
 
 const customStyleGrid = `#react-waterfall-grid-comps li>div {
 	  overflow: hidden;
@@ -128,8 +131,8 @@ const KolTownComponent = ({activeId, name, onShowProgress, query, ctrlVoiceStart
 			<div className={styles.kol_town_container}>
 				<div className={styles.kol_town_content}>
 					<div className={styles.header_search}>
-						{/*<div className={styles.quote}>RANDOM COLORS</div>*/}
-						<h3 className={styles.search_title}>{t('hot')}</h3>
+						<ChangingColorText text="发现你的旅行搭子" />
+						{/*<h3 className={styles.search_title}>{t('hot')}</h3>*/}
 						<input value={queryText} placeholder={"搜索"}
 						       className={styles.search_input}
 						       onChange={inputQuestion}

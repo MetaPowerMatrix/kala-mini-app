@@ -9,9 +9,9 @@ const SplashScreen = () => {
 				<defs>
 					<linearGradient id="paint0_linear_4050_5085" x1="-10.32" y1="32.1379" x2="430.685" y2="909.274"
 					                gradientUnits="userSpaceOnUse">
-						<stop stop-color="#A8D3FF"/>
-						<stop offset="0.5" stop-color="#69B4FF"/>
-						<stop offset="1" stop-color="#3D9CFB"/>
+						<stop stopColor="#A8D3FF"/>
+						<stop offset="0.5" stopColor="#69B4FF"/>
+						<stop offset="1" stopColor="#3D9CFB"/>
 					</linearGradient>
 				</defs>
 			</svg>

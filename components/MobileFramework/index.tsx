@@ -170,15 +170,6 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
           </div>
           <div style={{height: 428, marginTop: 70}}>
               <ChatListComponet ref={listRef} />
-            {/*{*/}
-            {/*  aiReplies.map((reply, index) => {*/}
-            {/*      return (*/}
-            {/*          <div key={index} className={reply.category === MessageCategory.Human ? "question" : "answer"} style={{marginTop: 30}}>*/}
-            {/*              <AiReplyComponent message={reply.message} imageUrl={reply.imageUrl} category={reply.category}/>*/}
-            {/*          </div>*/}
-            {/*      )*/}
-            {/*  })*/}
-            {/*}*/}
           </div>
       </>
     );
