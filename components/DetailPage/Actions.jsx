@@ -17,9 +17,8 @@ const Actions = () => {
         <div className={styles.actions}>
             <Row>
                 {['购买', '售卖'].map((action, index) => (
-                    <Col span={12} style={{textAlign: "center"}}>
+                    <Col key={index} span={12} style={{textAlign: "center"}}>
                         <button
-                            key={index}
                             ref={el => (buttonsRef.current[index] = el)}
                             className={styles.action_button}
                         >
@@ -30,9 +29,8 @@ const Actions = () => {
             </Row>
             <Row>
                 {['知识', '更多图', '识别'].map((action, index) => (
-                    <Col span={8} style={{textAlign: "center"}}>
+                    <Col key={index} span={8} style={{textAlign: "center"}}>
                         <button
-                            key={index}
                             ref={el => (buttonsRef.current[index] = el)}
                             className={styles.action_button}
                         >
