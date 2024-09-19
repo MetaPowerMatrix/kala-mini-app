@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { Tag } from 'antd'
+import commandDataContainer from '@/container/command'
 
-const TagsComponent = ({ tags, myTags, height=80 }:{tags: string[], myTags: (tags: string[])=>void, height?: number}) =>{
-	const [selectedTags, setSelectedTags] = useState<string[]>([]);
+const TagsComponent = ({ tags, presetTags, myTags, height=80 }:{tags: string[], presetTags: string[], myTags: (tags: string[])=>void, height?: number}) =>{
+	const [selectedTags, setSelectedTags] = useState<string[]>(presetTags);
 
 	const handleTagChange = (tag: string, checked: boolean) => {
 		const nextSelectedTags = checked
@@ -22,7 +23,7 @@ const TagsComponent = ({ tags, myTags, height=80 }:{tags: string[], myTags: (tag
 						checked={selectedTags.includes(tag)}
 						onChange={(checked) => handleTagChange(tag, checked)}
 					>
-						<h3 style={{ fontSize: 12 }}>{tag}</h3>
+						<h3 style={{ fontSize: 12, color: "gray" }}>{tag}</h3>
 					</Tag.CheckableTag>
 				))}
 			</div>

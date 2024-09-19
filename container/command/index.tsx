@@ -1,14 +1,18 @@
-import {createContainer} from "unstated-next"
+import { createContainer } from 'unstated-next'
 import {
   api_url,
   ChatMessage,
-  getApiServer, HotPro, KolInfo,
+  getApiServer,
+  HotPro,
+  KolInfo,
   PatoInfo,
   Persona,
   PortalHotAi,
-  PortalKnowledge, PortalLiveRoomInfo, PortalRoomInfo,
-  SessionMessages
-} from "@/common";
+  PortalKnowledge,
+  PortalLiveRoomInfo,
+  PortalRoomInfo,
+  SessionMessages,
+} from '@/common'
 
 const useCommand = () => {
   const create_pato = async (name: string): Promise<string> => {
@@ -36,6 +40,26 @@ const useCommand = () => {
     }
     return id
   }
+  const submit_pato_tags = async (tags: string[], id: string): Promise<string> => {
+    let url = getApiServer(80) + api_url.portal.submitTags + "/" + id
+    let response = await fetch(
+      `${url}`,
+      {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(tags)
+      }
+    )
+    if (response.ok) {
+      let dataJson = await response.json()
+      if (dataJson.code === '200'){
+        return dataJson.content
+      }
+    }
+    return '/images/chunxiao.jpg'
+  }
   const callPato = async (id: string, callid: string, topic: string) => {
     if (id === "" || callid === "") return null
     let data = {id: id, callid: callid, topic: topic}
@@ -58,6 +82,20 @@ const useCommand = () => {
     }catch (e) {
       console.log(e)
     }
+  }
+  const getPredefinedTags = async () => {
+    let url = getApiServer(80) + api_url.portal.tags
+    try {
+      let response = await fetch(`${url}`,)
+      if (response.ok) {
+        let dataJson = await response.json()
+        let tags: string[] = JSON.parse(dataJson.content)
+        return tags
+      }
+    }catch (e) {
+      console.log(e)
+    }
+    return []
   }
   const getProHots = async () => {
     let url = getApiServer(80) + api_url.portal.message.hotpros
@@ -94,7 +132,6 @@ const useCommand = () => {
       let response = await fetch(`${url}`,)
       if (response.ok) {
         let dataJson = await response.json()
-        // console.log(dataJson)
         let patoinfo: PatoInfo = JSON.parse(dataJson.content)
         return patoinfo
       }
@@ -104,20 +141,14 @@ const useCommand = () => {
     return null
   }
   const getPatoISS = async (id: string) => {
-    if (id === "") return undefined
+    if (id === "") return ''
     let url = getApiServer(80) + api_url.portal.character.iss + "/" + id
-    try {
-      let response = await fetch(`${url}`,)
-      if (response.ok) {
-        let dataJson = await response.json()
-        // console.log(dataJson)
-        let iss: Persona = JSON.parse(dataJson.content)
-        return iss
-      }
-    }catch (e) {
-      console.log(e)
+    let response = await fetch(`${url}`,)
+    if (response.ok) {
+      let dataJson = await response.json()
+      return dataJson.content
     }
-    return undefined
+    return ''
   }
   const login = (id: string) => {
     let url = getApiServer(80) + api_url.portal.login + "/" + id
@@ -143,8 +174,6 @@ const useCommand = () => {
     )
     if (response.ok) {
       let dataJson = await response.json()
-      console.log(dataJson)
-      // let data = JSON.parse(dataJson.content)
     }
   }
   const init_topic_chat = async (id: string, topic: string, town: string) => {
@@ -181,7 +210,6 @@ const useCommand = () => {
     )
     if (response.ok) {
       let dataJson = await response.json()
-      console.log(dataJson)
       let data: string[] = JSON.parse(dataJson.content)
       return data
     }
@@ -223,7 +251,6 @@ const useCommand = () => {
     )
     if (response.ok) {
       let dataJson = await response.json()
-      console.log(dataJson)
       if (dataJson.code === '200'){
         return true
       }
@@ -244,11 +271,6 @@ const useCommand = () => {
         body: JSON.stringify(data)
       }
     )
-    if (response.ok) {
-      let dataJson = await response.json()
-      console.log(dataJson)
-      // let data = JSON.parse(dataJson.content)
-    }
   }
   const end_live_chat = async (roles: string[]) => {
     let data = roles
@@ -263,11 +285,6 @@ const useCommand = () => {
         body: JSON.stringify(data)
       }
     )
-    if (response.ok) {
-      let dataJson = await response.json()
-      console.log(dataJson)
-      // let data = JSON.parse(dataJson.content)
-    }
   }
   const restore_live_chat = async (roles: string[], session: string) => {
     let data = roles
@@ -282,11 +299,6 @@ const useCommand = () => {
         body: JSON.stringify(data)
       }
     )
-    if (response.ok) {
-      let dataJson = await response.json()
-      console.log(dataJson)
-      // let data = JSON.parse(dataJson.content)
-    }
   }
   const edit_session_messages = async (id: string, kol: string, messages: ChatMessage[]) => {
     let data = {id: id, kol: kol, messages: messages}
@@ -460,7 +472,7 @@ const useCommand = () => {
     }
   }
   const image_desc_by_url = async (id: string, roomId: string, image_url: string) => {
-    let data = { id: id, room_id: roomId, scene: image_url }
+    let data = {id: id, room_id: roomId, scene: image_url}
     let url = getApiServer(80) + api_url.portal.town.image_parse
     let response = await fetch(
       `${url}`,
@@ -479,7 +491,7 @@ const useCommand = () => {
     return ''
   }
   const image_desc_by_url_prompt = async (id: string, roomId: string, image_url: string, prompt: string) => {
-    let data = { id: id, room_id: roomId, scene: image_url }
+    let data = {id: id, room_id: roomId, scene: image_url}
     let url = getApiServer(80) + api_url.portal.town.image_parse
     let response = await fetch(
       `${url}`,
@@ -568,7 +580,8 @@ const useCommand = () => {
       let response = await fetch(`${url}`,)
       if (response.ok) {
         let dataJson = await response.json()
-        return  dataJson.content
+        let token = dataJson.content
+        return token
       }
     } catch (e) {
       console.log(e)
@@ -582,7 +595,8 @@ const useCommand = () => {
       let response = await fetch(`${url}`,)
       if (response.ok) {
         let dataJson = await response.json()
-        return dataJson.content
+        let summary = dataJson.content
+        return summary
       }
     } catch (e) {
       console.log(e)
@@ -763,7 +777,8 @@ const useCommand = () => {
     )
     if (response.ok) {
       let dataJson = await response.json()
-      return  dataJson.content
+      let answer = dataJson.content
+      return answer
     }
     return ""
   }
@@ -803,7 +818,12 @@ const useCommand = () => {
       if (response.ok) {
         let dataJson = await response.json()
         let rooms: KolInfo[] = JSON.parse(dataJson.content)
-        return rooms
+        return rooms.map<KolInfo>((room) => {
+          if (room.avatar === ''){
+            room.avatar = '/images/notlogin.png'
+          }
+          return room
+        })
       }
     } catch (e) {
       console.log(e)
@@ -826,6 +846,36 @@ const useCommand = () => {
       console.log(e)
     }
   }
+  const query_marriage_rooms = async () => {
+    let url = getApiServer(80) + api_url.portal.town.marriage_list
+    try {
+      let response = await fetch(`${url}`,)
+      if (response.ok) {
+        let dataJson = await response.json()
+        let rooms: KolInfo[] = JSON.parse(dataJson.content)
+        return rooms
+      }
+    } catch (e) {
+      console.log(e)
+    }
+    return []
+  }
+  const join_marriage = async (id: string) => {
+    let url = getApiServer(80) + api_url.portal.town.join_marriage + "/" + id
+    try {
+      let response = await fetch(`${url}`,)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  const like_marriage_owner = async (follower:string, id: string) => {
+    let url = getApiServer(80) + api_url.portal.town.like_marriage_owner + "/" + follower + "/" + id
+    try {
+      let response = await fetch(`${url}`,)
+    } catch (e) {
+      console.log(e)
+    }
+  }
   const retrieve_pato_by_bame = async (name: string) => {
     if (name === "") return []
     let url = getApiServer(80) + api_url.portal.retrieve + "/" + name
@@ -833,7 +883,8 @@ const useCommand = () => {
       let response = await fetch(`${url}`,)
       if (response.ok) {
         let dataJson = await response.json()
-        return JSON.parse(dataJson.content)
+        let patos: HotPro[] = JSON.parse(dataJson.content)
+        return patos
       }
     } catch (e) {
       console.log(e)
@@ -862,7 +913,7 @@ const useCommand = () => {
       if (response.ok) {
         let dataJson = await response.json()
         let patoMessages: ChatMessage[] = JSON.parse(dataJson.content)
-          patoMessages.sort((a, b) => a.created_at - b.created_at)
+        patoMessages.sort((a, b) => a.created_at - b.created_at)
         return patoMessages
       }
     } catch (e) {
@@ -876,7 +927,8 @@ const useCommand = () => {
     goTown, query_embedding, query_summary, query_knowledges, getTownHots, getSharedKnowledges, share_knowledge,
     getProHots, add_shared_knowledge, getTopicHots, init_topic_chat, get_topic_chat_his, query_rooms, create_game_room,
     send_answer, gen_answer, ask_clue, join_game, log_user_activity, image_desc_by_url, reveal_answer, retrieve_pato_by_bame,
-    query_live_rooms, query_kol_rooms, become_kol, join_kol, get_pato_names, ask_image_prompt, ask_image_context
+    query_live_rooms, query_kol_rooms, become_kol, join_kol, get_pato_names, ask_image_prompt, ask_image_context,
+    getPredefinedTags, submit_pato_tags, query_marriage_rooms, join_marriage, like_marriage_owner
   }
 }
 

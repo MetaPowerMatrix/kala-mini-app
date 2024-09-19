@@ -39,7 +39,7 @@ const ChangingColorText = ({ text }) => {
                 <span
                     key={index}
                     ref={(el) => (textRef.current[index] = el)}
-                    style={{ display: 'inline-block', fontSize: 24 }}
+                    style={{ display: 'inline-block', fontSize: 16 }}
                 >
           {char}
         </span>

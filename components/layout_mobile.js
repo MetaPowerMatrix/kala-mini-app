@@ -4,7 +4,7 @@ import {Tabs} from "antd";
 import {
     UserOutlined,
     ShopOutlined,
-    CommentOutlined,
+    CommentOutlined, HomeOutlined,
 } from "@ant-design/icons";
 import React, {useEffect, useState} from 'react';
 import ModalLogin from "@/components/login";
@@ -16,6 +16,7 @@ import commandDataContainer from "@/container/command";
 import AIVoice from "@/components/AIVoice";
 import MobileFramework from "@/components/MobileFramework";
 import SplashScreen from "@/components/SplashScreen";
+import HomePage from "@/components/HomePage";
 
 export default function LayoutMobile({children, title, description, onChangeId, onRefresh }) {
     const [availableIds, setAvailableIds] = useState([]);
@@ -23,8 +24,8 @@ export default function LayoutMobile({children, title, description, onChangeId, 
     const [activeId, setActiveId] = useState("");
     const [activeName, setActiveName] = useState("");
     const [loading, setLoading] = useState(false);
-    const [activeTab, setActivTab] = useState('chat');
-    const [query, setQuery] = useState("emm，我们聊些什么呢...");
+    const [activeTab, setActivTab] = useState('home');
+    const [query, setQuery] = useState("");
     const [start, setStart] = useState(false);
     const [showSplash, setShowSplash] = useState(true);
 
@@ -103,6 +104,7 @@ export default function LayoutMobile({children, title, description, onChangeId, 
     }, [activeId])
 
     const tabs =[
+        {label: '首页', key:"home", icon: <HomeOutlined/>},
         {label: t('messages'), key:"chat", icon: <CommentOutlined/>},
         {label: t("discovery"), key:"discovery", icon: <ShopOutlined style={{fontSize:18, color:"#eeb075"}} />},
         {label: t("mine"), key:"mine", icon: <UserOutlined />}
@@ -111,6 +113,9 @@ export default function LayoutMobile({children, title, description, onChangeId, 
     const content = (key) => {
         return(
             <>
+                {key === 'home' &&
+                    <HomePage/>
+                }
                 {key === 'chat' &&
                     <MobileFramework ctrlVoiceStart={stop_record} query={query} name={activeName} activeId={activeId}/>
                 }
@@ -142,7 +147,7 @@ export default function LayoutMobile({children, title, description, onChangeId, 
                                 <AIVoice activeId={activeId} process_ws_message={process_ws_message} startStop={start}/>
                                 <Tabs
                                     destroyInactiveTabPane={false}
-                                    tabBarGutter={60}
+                                    tabBarGutter={40}
                                     centered
                                     size={"middle"}
                                     type={"line"}

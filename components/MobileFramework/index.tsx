@@ -111,12 +111,12 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
       <>
           <div className={styles.content}>
               <header className={styles.app_header} ref={headerRef}>
-                  <h1>{name}</h1>
-                  <button className={styles.get_pro}>读书</button>
+                  <h3>{name}</h3>
+                  {/*<button className={styles.get_pro}>读书</button>*/}
               </header>
 
               <div className={styles.input_section}>
-                    <textarea value={queryText} rows={4} ref={promptInputRef}
+                    <textarea value={queryText} placeholder="emm，我们聊些什么呢..." rows={4} ref={promptInputRef}
                               className={styles.prompt_input}
                               onChange={inputQuestion}
                     />
@@ -139,7 +139,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                                 placement={"bottomLeft"}
                                 content={
                                     <div style={{width: 270}}>
-                                        <TagsComponent tags={aiCharacterTags} myTags={(tags) => { setSelectedTags(tags) }}/>
+                                        <TagsComponent presetTags={[]} tags={aiCharacterTags} myTags={(tags) => { setSelectedTags(tags) }}/>
                                     </div>
                                 }
                                 trigger="click"
@@ -168,7 +168,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                   </div>
               </div>
           </div>
-          <div style={{height: 428, marginTop: 70}}>
+          <div style={{height: 458, marginTop: 70}}>
               <ChatListComponet ref={listRef} />
           </div>
       </>

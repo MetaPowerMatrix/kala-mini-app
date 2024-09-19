@@ -4,7 +4,6 @@ import {
 } from "antd";
 import {useTranslations} from 'next-intl';
 import LayoutMobile from "@/components/layout_mobile";
-import MobileFramework from "@/components/MobileFramework";
 
 export default function MobileHome() {
 	const [activeId, setActiveId] = useState("");

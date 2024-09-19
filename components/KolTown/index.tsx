@@ -13,7 +13,6 @@ import ChangingColorText from "@/components/AniBanner";
 
 const customStyleGrid = `#react-waterfall-grid-comps li>div {
 	  overflow: hidden;
-	  border-radius: 10px;
 	  background: rgb(255, 255, 255);
 	  transition: all 0.5s
 	}
@@ -24,7 +23,6 @@ const customStyleGrid = `#react-waterfall-grid-comps li>div {
 	}
 	#react-waterfall-grid-comps li>div>img {
 	  width: 100%;
-	  border-radius: 10px;
 	}`;
 
 const RoomList = ({rooms, mine}:{rooms:KolInfo[], mine:boolean}) => {
@@ -74,7 +72,7 @@ const RoomList = ({rooms, mine}:{rooms:KolInfo[], mine:boolean}) => {
 						<li key={index} onClick={() =>{} }>
 							<div style={{textAlign: "center"}}>
 								<img src={item.url} alt="" />
-								<span style={{color: "#eeb075", fontSize: 14}}>{item.title}</span>
+								<span style={{color: "gray", fontSize: 14}}>{item.title}</span>
 							</div>
 						</li>
 					);

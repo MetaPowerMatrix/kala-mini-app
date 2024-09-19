@@ -1,6 +1,6 @@
 // ProgressBarComponent.tsx
 import React, {useEffect} from 'react';
-import { Progress } from 'antd';
+import {Progress} from 'antd';
 import styles from './ProgressBarComponent.module.css'; // Assuming CSS is defined here
 
 interface ProgressBarComponentProps {
@@ -8,11 +8,21 @@ interface ProgressBarComponentProps {
 	steps: number;
 }
 
-const ProgressBarComponent: React.FC<ProgressBarComponentProps> = ({ visible, steps}) => {
+const Indicator = () => {
+	return (
+		<svg width="276" height="100" viewBox="0 0 276 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M106.75 91.6668V70.8335M106.75 29.1668V8.3335M96.3333 18.7502H117.167M96.3333 81.2502H117.167M142.167 12.5002L134.941 31.2871C133.766 34.3422 133.178 35.8698 132.265 37.1547C131.455 38.2935 130.46 39.2885 129.321 40.0982C128.036 41.0118 126.509 41.5994 123.454 42.7744L104.667 50.0002L123.454 57.2259C126.509 58.4009 128.036 58.9885 129.321 59.9021C130.46 60.7119 131.455 61.7068 132.265 62.8456C133.178 64.1305 133.766 65.6581 134.941 68.7132L142.167 87.5002L149.392 68.7132C150.567 65.6581 151.155 64.1305 152.069 62.8456C152.878 61.7068 153.873 60.7119 155.012 59.9021C156.297 58.9885 157.825 58.4009 160.88 57.2259L179.667 50.0002L160.88 42.7744C157.825 41.5994 156.297 41.0118 155.012 40.0982C153.873 39.2885 152.878 38.2935 152.069 37.1547C151.155 35.8698 150.567 34.3422 149.392 31.2871L142.167 12.5002Z"
+				stroke="#3D9CFB" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+		</svg>
+	)
+}
+
+const ProgressBarComponent: React.FC<ProgressBarComponentProps> = ({visible, steps}) => {
 	const [percent, setPercent] = React.useState(5);
 
 	useEffect(() => {
-		if (!visible){
+		if (!visible) {
 			// Set up the interval
 			const intervalId = setInterval(() => {
 				setPercent((prevPercent) => {
@@ -36,7 +46,9 @@ const ProgressBarComponent: React.FC<ProgressBarComponentProps> = ({ visible, st
 	return (
 		<div className={styles.progress_bar_container}>
 			<div className={styles.progress_bar_content}>
-				<Progress strokeColor={"yellow"} trailColor={"white"} steps={steps} percent={percent} size={[20, 30]} status="active" showInfo={false} />
+				<Indicator/>
+				{/*<Progress strokeColor={"yellow"} trailColor={"white"} steps={steps} percent={percent} size={[20, 30]}*/}
+				{/*          status="active" showInfo={false}/>*/}
 			</div>
 		</div>
 	);

@@ -1,10 +1,11 @@
-import {Button, Card, Col, Descriptions, Divider, Flex, Modal, Row, Timeline} from "antd";
+import {Button, Card, Col, Descriptions, Divider, Flex, Modal, Popover, Row, Timeline} from "antd";
 import utilStyles from "@/styles/utils.module.css";
 import {
+	EditOutlined,
 	GoldFilled,
 	InfoCircleFilled,
 	QrcodeOutlined, ShareAltOutlined,
-	TagsOutlined
+	TagsOutlined, UploadOutlined
 } from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
 import commandDataContainer from "@/container/command";
@@ -27,29 +28,23 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 	const [userInfo, setUserInfo] = useState<PatoInfo>();
 	const command = commandDataContainer.useContainer()
 	const [showSubscription, setShowSubscription] = useState<boolean>(false)
-	const [openCode, setOpenCode] = useState(false);
 	const [openPanel, setOpenPanel] = useState<boolean>(false)
-	const [selectedTags, setSelectedTags] = useState<string[]>([]);
+	const [avatar, setAvatar] = useState('/images/notlogin.png')
+	const [cover, setCover] = useState('/images/chunxiao.jpg')
+	const [myTags, setMyTags] = useState<string[]>([]);
+	const [openPop, setOpenPop] = useState<boolean>(false)
+	const [predefinedTags, setPredefinedTags] = useState<string[]>([])
 	const t = useTranslations('Login');
 
 	const aiCharacterTags: string[] = ["情感", "历史", "游戏", "婚恋", "科技", "投资", "职业", "音乐", "助手"]
 	const achievementTags: string[] = ["金牌", "银牌", "铜牌"]
 	const fansTags: string[] = ["粉丝", "关注", "好友", "好友", "好友", "好友"]
 
-	const tagsHead = ()=>{
-		return(
-			<>
-				<TagsOutlined style={{fontWeight: "bold", color: "#eeb075", fontSize: 14}}/>
-				<span style={{marginLeft: 5, fontWeight: "bold", color: "#eeb075", fontSize: 12}}>我的标签</span>
-			</>
-		)
-	}
-
 	const awardHead = ()=>{
 		return(
 			<>
-				<GoldFilled style={{fontWeight: "bold", color: "#eeb075", fontSize: 14}}/>
-				<span style={{marginLeft: 5, fontWeight: "bold", color: "#eeb075", fontSize: 12}}>我的勋章</span>
+				<GoldFilled style={{fontWeight: "bold", color: "gray", fontSize: 14}}/>
+				<span style={{marginLeft: 5, fontWeight: "bold", color: "gray", fontSize: 12}}>我的勋章</span>
 			</>
 		)
 	}
@@ -57,17 +52,8 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 	const relationshipHead = (title: string)=>{
 		return(
 			<>
-				<ShareAltOutlined style={{fontWeight: "bold", color: "#eeb075", fontSize: 14}}/>
-				<span style={{marginLeft: 5, fontWeight: "bold", color: "#eeb075", fontSize: 12}}>{title}</span>
-			</>
-		)
-	}
-
-	const infoHead = ()=>{
-		return(
-			<>
-				<InfoCircleFilled style={{fontWeight: "bold", color: "#eeb075", fontSize: 14}}/>
-				<span style={{marginLeft: 5, fontWeight: "bold", color: "#eeb075", fontSize: 14}}>我的资料</span>
+				<ShareAltOutlined style={{fontWeight: "bold", color: "gray", fontSize: 14}}/>
+				<span style={{marginLeft: 5, fontWeight: "bold", color: "gray", fontSize: 12}}>{title}</span>
 			</>
 		)
 	}
@@ -85,26 +71,42 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 			console.error('Failed to copy text to clipboard: ', err);
 		}
 	};
+
+	useEffect(()=>{
+		command.getPredefinedTags().then((resp)=>{
+			setPredefinedTags(resp)
+		})
+	}, [])
+
 	useEffect(() => {
 		command.getPatoInfo(activeId).then((res): void => {
 			if ( res !== null){
 				setUserInfo(res);
-			}
-		})
-		command.getPatoISS(activeId).then((res) => {
-			if (res !== undefined){
-				setSelectedTags([res.currently])
+				setAvatar(res.avatar)
+				setCover(res.cover)
+				setMyTags(res.tags)
 			}
 		})
 	},[activeId]);
 
+	const handleSubmitTags = () => {
+		onShowProgress(true)
+		command.submit_pato_tags(myTags, activeId).then((resp)=>{
+			setAvatar(resp)
+			onShowProgress(false)
+		})
+	};
+	const handleOpenChange = (newOpen: boolean) => {
+		setOpenPop(newOpen);
+	};
+
 	return (
 		<header className={styles.header_panel_mobile_container}>
-			<div className={styles.header_user}>
+			<div className={styles.header_user} style={{backgroundImage: cover}}>
 				<Row align={"middle"}>
-					<Col span={5} style={{textAlign:"center"}}>
+					<Col span={5} style={{textAlign: "center"}}>
 						<img
-							src="/images/notlogin.png"
+							src={avatar}
 							className={utilStyles.borderCircle}
 							height={72}
 							width={72}
@@ -133,39 +135,79 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 			</div>
 
 			<div className={styles.header_panel_mobile_info}>
-			<Card bodyStyle={{padding:5}} style={{marginLeft: 20, marginRight: 20, top: 105, zIndex: 3, position: "absolute", height: 550, overflow: "scroll"}}>
-					<Meta title={tagsHead()}/>
+				<Card bodyStyle={{padding: 5}} style={{
+					marginLeft: 20,
+					marginRight: 20,
+					top: 105,
+					zIndex: 3,
+					position: "absolute",
+					height: 555,
+					overflow: "scroll"
+				}}>
+					<div>
+						<TagsOutlined style={{fontWeight: "bold", color: "#eeb075", fontSize: 14}}/>
+						<span style={{marginLeft: 5, fontWeight: "bold", color: "gray", fontSize: 12}}>我的标签</span>
+
+						<Popover
+							placement={"bottom"}
+							content={
+								<div style={{width: 370}}>
+									<TagsComponent height={200} presetTags={myTags} tags={predefinedTags} myTags={(tags) => {
+										setMyTags(tags)
+									}}/>
+								</div>
+							}
+							trigger="click"
+							open={openPop}
+							onOpenChange={handleOpenChange}
+						>
+							<EditOutlined style={{marginLeft: 20, color: "gray", marginRight: 10}}/>
+						</Popover>
+
+						<UploadOutlined onClick={handleSubmitTags} style={{marginLeft: 10, color: "gray", marginRight: 10}}/>
+					</div>
 					<div style={{padding: 20}}>
-						<TagsComponent height={60} tags={aiCharacterTags} myTags={(tags) => {
-							setSelectedTags(tags)
+						<TagsComponent presetTags={myTags} height={60} tags={myTags} myTags={(tags) => {
+							setMyTags(tags)
 						}}/>
 					</div>
-
-					<Meta title={awardHead()}/>
-					<div style={{padding: 20}}>
-						<ImageTagsComponent height={80} tags={achievementTags}/>
+					<Divider/>
+					<div className={styles.info_btn_container}>
+						<div className={styles.info_btn}>
+							<Meta title={awardHead()}/>
+						</div>
+						<div className={styles.info_btn}>
+							<Meta title={relationshipHead("我的粉丝")}/>
+						</div>
+						<div className={styles.info_btn}>
+							<Meta title={relationshipHead("我的关注")}/>
+						</div>
 					</div>
-
-					<Meta title={relationshipHead("我的粉丝")}/>
-					<div style={{padding: 20}}>
-						<ImageTagsComponent height={80} tags={fansTags}/>
+					<Divider/>
+					<div className={styles.info_btn_container}>
+						<div className={styles.info_btn}>
+							<Meta title={relationshipHead("充值")}/>
+						</div>
+						<div className={styles.info_btn}>
+							<Meta title={relationshipHead("积分")}/>
+						</div>
+						<div className={styles.info_btn}>
+							<Meta title={relationshipHead("订单")}/>
+						</div>
 					</div>
-
-					<Meta title={relationshipHead("我的关注")}/>
-					<div style={{padding: 20}}>
-						<ImageTagsComponent height={80} tags={fansTags}/>
-					</div>
+					<Divider/>
+					<Row style={{padding: 10}}>
+						<Col span={24}>
+							<Button style={{width: "100%",backgroundColor: "white",border: "1px solid #79c5c5", color:"gray"}} onClick={() => onChangeId(false)}>切换账号</Button>
+						</Col>
+					</Row>
 				</Card>
 			</div>
-			<SlidePanel activeId={activeId} isOpen={openPanel}  onClose={()=> setOpenPanel(false)}>
+			<SlidePanel activeId={activeId} isOpen={openPanel} onClose={() => setOpenPanel(false)}>
 				<QRCodeComponent id={activeId}/>
 			</SlidePanel>
-				{/*<Row style={{padding:10}}>*/}
-				{/*	<Col span={24}>*/}
-				{/*		<Button style={{width: "100%"}} type={"primary"} onClick={() => onChangeId(false)}>切换账号</Button>*/}
-				{/*	</Col>*/}
-				{/*</Row>*/}
-			<SubscriptionsComponent mobile={false} id={activeId} onClose={() => setShowSubscription(false)} visible={showSubscription} onShowProgress={onShowProgress}/>
+			<SubscriptionsComponent mobile={false} id={activeId} onClose={() => setShowSubscription(false)}
+			                        visible={showSubscription} onShowProgress={onShowProgress}/>
 		</header>
 	)
 }

@@ -7,7 +7,7 @@
 }
 .header_user{
     padding: 15px;
-    background-color: #79c5c5;
+    background-color: #eeb075;
     height: 170px;
 }
 .header_meta{
@@ -20,4 +20,22 @@
     text-align: end;
 }
 .colorBar {
+}
+.info_btn_container{
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    text-align: center;
+}
+.info_btn {
+    border: 1px solid #79c5c5;
+    /*background-color: #79c5c5;*/
+    color: gray;
+    margin-right: 10px;
+    width: 100px;
+    height: 70px;
+    padding: 10px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    align-content: center;
 }

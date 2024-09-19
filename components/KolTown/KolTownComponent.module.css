@@ -42,8 +42,8 @@
     display: grid;
     grid-template-rows: 1fr auto;
     padding: 15px;
-    background-color: #79c5c5;
-    height: 150px;
+    background-color: #eeb075;
+    height: 100px;
 }
 
 .search_input {
