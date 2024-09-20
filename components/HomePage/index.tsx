@@ -63,15 +63,15 @@ const HomePage: React.FC<HomePageProps> = () => {
 
 			{/* Trending Video Section */}
 			<div className={styles.trending_video} ref={trendingVideoRef}>
-				<img src={"images/texture-2.png"}/>
+				<img src={"images/texture-2.png"} alt={"tag"}/>
 				<ChangingColorText text="发现新疆好物" fontSize={12}/>
-				<img src={"images/texture-2.png"}/>
+				<img src={"images/texture-2.png"} alt={"tag"}/>
 			</div>
 			<div style={{overflow: "scroll", height: 340}}>
 				{
 					[1,2,3,4,5,6,7,8,9,10].map((item, index) => (
-						<div className="goods">
-							<div key={index} className={styles.video_item}>
+						<div key={index} className="goods">
+							<div className={styles.video_item}>
 								<img src={images[index].url} className={styles.video_thumbnail}/>
 								<div className={styles.video_info}>
 									<p>库尔勒香梨</p>
