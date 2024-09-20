@@ -106,7 +106,7 @@ export default function LayoutMobile({children, title, description, onChangeId, 
     const tabs =[
         {label: '首页', key:"home", icon: <HomeOutlined/>},
         {label: t('messages'), key:"chat", icon: <CommentOutlined/>},
-        {label: t("discovery"), key:"discovery", icon: <ShopOutlined style={{fontSize:18, color:"#eeb075"}} />},
+        {label: t("discovery"), key:"discovery", icon: <ShopOutlined/>},
         {label: t("mine"), key:"mine", icon: <UserOutlined />}
     ]
 
