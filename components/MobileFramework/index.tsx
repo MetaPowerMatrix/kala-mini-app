@@ -168,7 +168,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
                   </div>
               </div>
           </div>
-          <div style={{height: 458, marginTop: 70}}>
+          <div className={styles.chatlist_container}>
               <ChatListComponet ref={listRef} />
           </div>
       </>

@@ -12,7 +12,7 @@ const getRandomColor = () => {
     return color;
 };
 
-const ChangingColorText = ({ text }) => {
+const ChangingColorText = ({ text, fontSize=16 }) => {
     const textRef = useRef([]);
 
     useEffect(() => {
@@ -39,7 +39,7 @@ const ChangingColorText = ({ text }) => {
                 <span
                     key={index}
                     ref={(el) => (textRef.current[index] = el)}
-                    style={{ display: 'inline-block', fontSize: 16 }}
+                    style={{ display: 'inline-block', fontSize: fontSize }}
                 >
           {char}
         </span>

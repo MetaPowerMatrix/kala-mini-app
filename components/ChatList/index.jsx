@@ -103,7 +103,7 @@ const ChatListComponent = forwardRef((props, ref) => {
                         id={`box-${index}`}
                         key={index}
                         className={`box`}
-                        style={{margin: 15}}
+                        style={{margin: 10}}
                     >
                         <AiReplyComponent message={item.message} imageUrl={item.imageUrl} category={item.category}/>
                     </div>

@@ -3,9 +3,10 @@
     height: 580px;
 }
 .kol_town_content {
-    height: 100%;
     width: 100%;
     text-align: center;
+    /*background-image: linear-gradient(to bottom, #fff, #eee);*/
+    background-image: linear-gradient(to bottom, #eeb075, #eeeeee);
 }
 /* src/components/Waterfall.css */
 .waterfall_container {

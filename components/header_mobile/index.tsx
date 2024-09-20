@@ -142,7 +142,8 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 					zIndex: 3,
 					position: "absolute",
 					height: 555,
-					overflow: "scroll"
+					overflow: "scroll",
+					backgroundImage: "linear-gradient(to bottom, #fff, #eee)"
 				}}>
 					<div>
 						<TagsOutlined style={{fontWeight: "bold", color: "#eeb075", fontSize: 14}}/>
