@@ -3,7 +3,6 @@ import utilStyles from "@/styles/utils.module.css";
 import {
 	EditOutlined,
 	GoldFilled,
-	InfoCircleFilled,
 	QrcodeOutlined, ShareAltOutlined,
 	TagsOutlined, UploadOutlined
 } from "@ant-design/icons";
@@ -16,7 +15,6 @@ import SubscriptionsComponent from "@/components/Subscriptions";
 import QRCodeComponent from "@/components/QRCode";
 import Meta from "antd/es/card/Meta";
 import TagsComponent from "@/components/tags";
-import ImageTagsComponent from "@/components/ImageTags";
 import SlidePanel from "@/components/SlidePanel";
 
 const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
@@ -37,8 +35,6 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 	const t = useTranslations('Login');
 
 	const aiCharacterTags: string[] = ["情感", "历史", "游戏", "婚恋", "科技", "投资", "职业", "音乐", "助手"]
-	const achievementTags: string[] = ["金牌", "银牌", "铜牌"]
-	const fansTags: string[] = ["粉丝", "关注", "好友", "好友", "好友", "好友"]
 
 	const awardHead = ()=>{
 		return(

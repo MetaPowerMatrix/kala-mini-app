@@ -16,8 +16,8 @@
 }
 
 .avatar {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     background-color: gray;
 }
@@ -28,22 +28,26 @@
 }
 
 .notification {
-    width: 30px;
-    height: 30px;
-    background-color: #3c3c3c;
+    width: 25px;
+    height: 25px;
+    color: gray;
+    text-align: center;
+    padding-top: 2px;
+    font-size: 12px;
+    border: 1px solid #eeb075;
     border-radius: 50%;
     position: relative;
 }
 
 .notification::after {
     content: '';
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     background-color: red;
     border-radius: 50%;
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 1px;
+    right: -4px;
 }
 
 /* Upgrade Section */
