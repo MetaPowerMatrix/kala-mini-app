@@ -97,7 +97,7 @@ const ChatListComponent = forwardRef((props, ref) => {
 
     return (
         <div ref={el} className="boxes">
-            <div style={{height: 430, overflow: "scroll"}}>
+            <div style={{height: 468, overflow: "scroll"}}>
                 {layout.items.map((item, index) => (
                     <div
                         id={`box-${index}`}

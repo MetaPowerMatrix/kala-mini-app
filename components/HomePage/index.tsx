@@ -60,10 +60,6 @@ const HomePage: React.FC<HomePageProps> = ({activeId}) => {
 				<div className={styles.notification}><NotificationOutlined/> </div>
 			</div>
 
-			<div style={{color: "#eeb075", textAlign: "center"}}>
-				<h4>你今天的幸运色是黄色</h4>
-			</div>
-
 			{/* Upgrade Pro section */}
 			<div className={styles.upgrade_section} ref={upgradeRef}>
 				<div className={styles.upgrade_content}>
@@ -82,9 +78,10 @@ const HomePage: React.FC<HomePageProps> = ({activeId}) => {
 
 			{/* Trending Video Section */}
 			<div className={styles.trending_video} ref={trendingVideoRef}>
-				<img src={"images/texture-2.png"} alt={"tag"}/>
-				<ChangingColorText text="发现新疆好物" fontSize={12}/>
-				<img src={"images/texture-2.png"} alt={"tag"}/>
+				<div className={styles.category_text}>水果</div>
+				<div className={styles.category_text}>肉类</div>
+				<div className={styles.category_text}>干果</div>
+				<div className={styles.category_text}>美食</div>
 			</div>
 			<div style={{overflow: "scroll", height: 340}}>
 			{

@@ -22,7 +22,7 @@
 
 .input_section {
     position: absolute;
-    top: 40px;
+    top: 10px;
     left: 10px;
     right: 10px;
     margin: 20px 0;
@@ -61,6 +61,6 @@
 
 .chatlist_container {
     background-image: linear-gradient(to bottom, #ffffff, #eeeeee);
-    height: 458px;
-    margin-top: 80px;
+    height: 468px;
+    margin-top: 60px;
 }

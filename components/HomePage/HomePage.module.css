@@ -94,12 +94,8 @@
 .trending_video{
     display: flex;
     justify-content: space-between;
-    margin: 30px 40px 10px 40px;
+    margin: 20px 40px 10px 40px;
     text-align: center;
-    /*background-image:  url("/images/texture-2.png");*/
-    background-size: contain;
-    background-repeat: round;
-    height: 20px;
 }
 
 .video_item {
@@ -134,4 +130,13 @@
     /*border: none;*/
     border-radius: 5px;
     cursor: pointer;
+}
+
+.category_text {
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: #ffffff;
+    border:1px solid #eeb075;
+    color: gray;
+    font-size: 12px;
 }

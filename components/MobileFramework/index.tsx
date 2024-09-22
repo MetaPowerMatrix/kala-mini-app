@@ -111,7 +111,7 @@ const MobileFramework = ({name, activeId, query, ctrlVoiceStart}:{name: string, 
       <>
           <div className={styles.content}>
               <header className={styles.app_header} ref={headerRef}>
-                  <h3>{name}</h3>
+                  {/*<h3>{name}</h3>*/}
                   {/*<button className={styles.get_pro}>读书</button>*/}
               </header>
 
