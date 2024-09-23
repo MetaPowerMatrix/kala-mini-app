@@ -195,7 +195,7 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 					<Divider/>
 					<Row style={{padding: 10}}>
 						<Col span={24}>
-							<Button style={{width: "100%",backgroundColor: "white",border: "1px solid #79c5c5", color:"gray"}} onClick={() => onChangeId(false)}>切换账号</Button>
+							<Button style={{width: "100%",backgroundColor: "white",border: "1px solid #eeb075", color:"gray"}} onClick={() => onChangeId(false)}>切换账号</Button>
 						</Col>
 					</Row>
 				</Card>

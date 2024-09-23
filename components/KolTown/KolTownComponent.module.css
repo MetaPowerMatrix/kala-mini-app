@@ -1,12 +1,11 @@
 .kol_town_container {
     width: 100%;
-    height: 580px;
+    height: 100%;
 }
 .kol_town_content {
     width: 100%;
     text-align: center;
     /*background-image: linear-gradient(to bottom, #fff, #eee);*/
-    background-image: linear-gradient(to bottom, #eeb075, #eeeeee);
 }
 /* src/components/Waterfall.css */
 .waterfall_container {
@@ -43,7 +42,7 @@
     display: grid;
     grid-template-rows: 1fr auto;
     padding: 15px;
-    background-color: #eeb075;
+    /*background-color: #eeb075;*/
     height: 100px;
 }
 

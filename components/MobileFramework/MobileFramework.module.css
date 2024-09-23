@@ -27,7 +27,7 @@
     right: 10px;
     margin: 20px 0;
     border-radius: 8px;
-    border: 1px solid #79c5c5;
+    border: 1px solid #eeb075;
     padding: 10px;
     background-color: white;
 }
@@ -61,6 +61,6 @@
 
 .chatlist_container {
     background-image: linear-gradient(to bottom, #ffffff, #eeeeee);
-    height: 468px;
+    height: 484px;
     margin-top: 60px;
 }
