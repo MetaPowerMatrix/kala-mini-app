@@ -15,7 +15,7 @@ const SlidingPanel = ({children, isOpen, onClose, activeId}) => {
     useEffect(() => {
         // Slide up to show the panel
         if (isOpen) {
-            gsap.to(panelRef.current, { y: '0%', duration: 0.5, ease: 'power3.inOut' });
+            gsap.to(panelRef.current, { y: '10%', duration: 0.5, ease: 'power3.inOut' });
         } else {
             // Slide down to hide the panel
             gsap.to(panelRef.current, { y: '100%', duration: 0.5, ease: 'power3.inOut' });
