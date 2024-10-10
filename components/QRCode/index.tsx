@@ -71,9 +71,9 @@ const QRCodeComponent: React.FC<QRCodeProps> = ({id}) => {
 						:
 						<div style={{textAlign: "center"}}>
 							<h5 style={{display: 'inline-block'}}>{t('shouldKol')}</h5>
-							<a onClick={()=>setShowBuyKol(true)}>
+							<Button onClick={()=>setShowBuyKol(true)}>
 								{t("buyKol")}
-							</a>
+							</Button>
 						</div>
 				}
 			<BuyKolComponent id={id} room_id={''}

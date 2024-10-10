@@ -148,7 +148,7 @@ export default function LayoutMobile({children, title, description, onChangeId, 
                                 <Tabs
                                     destroyInactiveTabPane={false}
                                     tabBarGutter={40}
-                                    tabBarStyle={{backgroundColor: '#f0f2f5', marginTop: 0}}
+                                    tabBarStyle={{backgroundColor: '#eeb075', marginTop: 0}}
                                     centered
                                     size={"middle"}
                                     type={"line"}

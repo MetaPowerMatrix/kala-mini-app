@@ -61,3 +61,12 @@ h1 {
 .ant-tag-checkable-checked{
   background-color: #79c5c5;
 }
+
+.ant-tabs .ant-tabs-tab{
+  color: black;
+}
+
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: black;
+  border: none;
+}

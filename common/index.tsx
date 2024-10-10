@@ -104,6 +104,11 @@ export interface ChatMessage{
   subject: string,
   sender_role: string
 }
+export interface KolToken{
+  id: string,
+  name:string,
+  token:string
+}
 export interface SessionMessages{
   session: string,
   summary: string,
@@ -159,7 +164,8 @@ export const api_url = {
     },
     'auth':{
       'gen': '/api/pato/pro/auth/gen',
-      'query': '/api/pato/pro/auth/query'
+      'query': '/api/pato/pro/auth/query',
+      'kol': '/api/pato/kol/auth/query',
     },
     'town':{
       "gen_scene": '/api/town/generate/scene',

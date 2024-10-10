@@ -1,7 +1,7 @@
 /* Main container styles */
 .home_container {
     background-color: #eeb075;
-    color: white;
+    color: black;
     font-family: 'Arial', sans-serif;
     height: 676px;
     /*background-image: linear-gradient(to bottom, #eeb075, #fff);*/
@@ -15,7 +15,10 @@
     justify-content: space-between;
     align-items: center;
 }
-
+.header h4{
+    color: black;
+    margin-right: 10px;
+}
 .avatar {
     width: 25px;
     height: 25px;
@@ -27,14 +30,26 @@
     color: #8f8f8f;
 }
 
-.notification {
-    width: 25px;
-    height: 25px;
-    color: gray;
+.search {
+    width: 35px;
+    height: 35px;
+    color: black;
     text-align: center;
-    padding-top: 2px;
-    font-size: 12px;
-    border: 1px solid darkgray;
+    padding-top: 4px;
+    font-size: 18px;
+    background-color: #eae4cc;
+    border-radius: 50%;
+    position: relative;
+    margin-right: 10px;
+}
+.notification {
+    width: 35px;
+    height: 35px;
+    color: black;
+    text-align: center;
+    padding-top: 4px;
+    font-size: 18px;
+    background-color: #eae4cc;
     border-radius: 50%;
     position: relative;
 }
@@ -59,22 +74,21 @@
 }
 .upgrade_content {
     border-radius: 15px;
-    background-color: #f4dec7;
+    background-color: #eae4cc;
+    height: 400px;
 }
 
-.upgrade_content p {
-    margin: 0;
+.upgrade_content div h5 {
+    margin: 5px;
 }
 
 .upgrade_btn {
     margin-top: 5px;
+    width: 120px;
     padding: 5px 10px;
     background-color: #ffffff;
-    border:1px solid #eeb075;
-    color: gray;
+    color: black;
     border-radius: 15px;
-    cursor: pointer;
-    margin-right: 10px;
 }
 
 .upgrade_icon {
@@ -88,12 +102,12 @@
     border-radius: 50%;
 }
 
-/* Trending Video Section */
 .trending_video{
     display: flex;
-    justify-content: space-between;
-    margin: 20px 40px 10px 40px;
+    justify-content: space-around;
+    margin: 20px 20px 10px 20px;
     text-align: center;
+    overflow: scroll;
 }
 
 .video_item {
@@ -115,16 +129,17 @@
 
 .video_info p {
     margin: 10px;
-    color: gray;
+    color: black;
 }
 
 .video_info button {
     margin-top: 5px;
     margin-right: 10px;
+    width: 100px;
     padding: 5px 10px;
     background-color: #ffffff;
     border:1px solid #eeb075;
-    color: gray;
+    color: black;
     /*border: none;*/
     border-radius: 15px;
     cursor: pointer;
@@ -132,10 +147,21 @@
 
 .category_text {
     width: 75px;
-    border-radius: 15px;
     padding: 5px 10px;
-    background-color: #ffffff;
-    /*border:1px solid #eeb075;*/
-    color: gray;
-    font-size: 12px;
+    color: black;
+    font-size: 14px;
+}
+.category_text_wide {
+    width: 95px;
+    padding: 5px 10px;
+    color: black;
+    font-size: 14px;
+}
+
+.drawer{
+    background-color: #eeb075;
+}
+
+.drawer h3 {
+    color: black;
 }

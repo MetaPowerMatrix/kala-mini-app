@@ -4,7 +4,7 @@ import {
   ChatMessage,
   getApiServer,
   HotPro,
-  KolInfo,
+  KolInfo, KolToken,
   PatoInfo,
   Persona,
   PortalHotAi,
@@ -876,6 +876,23 @@ const useCommand = () => {
       console.log(e)
     }
   }
+  const queryPatoKolToken = async (id: string | null) => {
+    if (id === null) return undefined
+    let url = getApiServer(80) + api_url.portal.auth.kol + "/" + id
+    try {
+      let response = await fetch(`${url}`,)
+      if (response.ok) {
+        let dataJson = await response.json()
+        if (dataJson.code === '200'){
+          let kolToken: KolToken = JSON.parse(dataJson.content)
+          return kolToken
+        }
+      }
+    } catch (e) {
+      console.log(e)
+    }
+    return undefined
+  }
   const retrieve_pato_by_bame = async (name: string) => {
     if (name === "") return []
     let url = getApiServer(80) + api_url.portal.retrieve + "/" + name
@@ -928,7 +945,7 @@ const useCommand = () => {
     getProHots, add_shared_knowledge, getTopicHots, init_topic_chat, get_topic_chat_his, query_rooms, create_game_room,
     send_answer, gen_answer, ask_clue, join_game, log_user_activity, image_desc_by_url, reveal_answer, retrieve_pato_by_bame,
     query_live_rooms, query_kol_rooms, become_kol, join_kol, get_pato_names, ask_image_prompt, ask_image_context,
-    getPredefinedTags, submit_pato_tags, query_marriage_rooms, join_marriage, like_marriage_owner
+    getPredefinedTags, submit_pato_tags, query_marriage_rooms, join_marriage, like_marriage_owner, queryPatoKolToken
   }
 }
 

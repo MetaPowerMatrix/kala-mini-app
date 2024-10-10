@@ -15,7 +15,7 @@ const SplashScreen = () => {
 					</linearGradient>
 				</defs>
 			</svg>
-			<img src={"logo.png"} alt={"logo"} className={styles.logo}/>
+			<img src={"logo-transparent.png"} alt={"logo"} className={styles.logo}/>
 		</div>
 	)
 }

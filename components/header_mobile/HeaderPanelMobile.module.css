@@ -40,3 +40,18 @@
     margin-bottom: 20px;
     align-content: center;
 }
+.info_container {
+    display: flex;
+    justify-content: space-between;
+    border: 0px solid #79c5c5;
+    color: black;
+    margin-right: 10px;
+    height: 70px;
+    padding: 10px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    align-content: center;
+}
+.info_container span{
+    margin-right: 10px;
+}

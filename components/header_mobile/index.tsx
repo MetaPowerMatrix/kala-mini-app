@@ -2,71 +2,73 @@ import {Button, Card, Col, Descriptions, Divider, Flex, Modal, Popover, Row, Tim
 import utilStyles from "@/styles/utils.module.css";
 import {
 	EditOutlined,
-	GoldFilled,
+	GoldFilled, PlusOutlined,
 	QrcodeOutlined, ShareAltOutlined,
 	TagsOutlined, UploadOutlined
 } from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
 import commandDataContainer from "@/container/command";
 import {useTranslations} from "next-intl";
-import {PatoInfo} from "@/common";
+import {KolInfo, PatoInfo} from "@/common";
 import styles from './HeaderPanelMobile.module.css'
-import SubscriptionsComponent from "@/components/Subscriptions";
 import QRCodeComponent from "@/components/QRCode";
 import Meta from "antd/es/card/Meta";
 import TagsComponent from "@/components/tags";
 import SlidePanel from "@/components/SlidePanel";
+// import KOLListComponent from "@/components/KOL";
 
+const pad = function(src: Number, size: number) {
+	let s = String(src);
+	while (s.length < (size || 2)) {s = "0" + s;}
+	return s;
+};
+const copyToClipboard = async (text: string) => {
+	try {
+		await navigator.clipboard.writeText(text);
+		console.log('Text copied to clipboard');
+	} catch (err) {
+		console.error('Failed to copy text to clipboard: ', err);
+	}
+};
+
+const awardHead = ()=>{
+	return(
+		<>
+			<GoldFilled style={{fontWeight: "bold", color: "black", fontSize: 14}}/>
+			<span style={{marginLeft: 5, fontWeight: "bold", color: "black", fontSize: 12}}>我的订单</span>
+		</>
+	)
+}
+
+const relationshipHead = (title: string)=>{
+	return(
+		<>
+			<ShareAltOutlined style={{fontWeight: "bold", color: "black", fontSize: 14}}/>
+			<span style={{marginLeft: 5, fontWeight: "bold", color: "black", fontSize: 12}}>{title}</span>
+		</>
+	)
+}
 const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
-   {activeId:string,
-	   onShowProgress: (s: boolean)=>void,
-	   onChangeId: (s: boolean)=>void,
-	 }) =>
+	                           {activeId:string,
+		                           onShowProgress: (s: boolean)=>void,
+		                           onChangeId: (s: boolean)=>void,
+	                           }) =>
 {
 	const [userInfo, setUserInfo] = useState<PatoInfo>();
 	const command = commandDataContainer.useContainer()
-	const [showSubscription, setShowSubscription] = useState<boolean>(false)
 	const [openPanel, setOpenPanel] = useState<boolean>(false)
 	const [avatar, setAvatar] = useState('/images/notlogin.png')
-	const [cover, setCover] = useState('/images/chunxiao.jpg')
+	const [cover, setCover] = useState<string|undefined>(undefined)
 	const [myTags, setMyTags] = useState<string[]>([]);
 	const [openPop, setOpenPop] = useState<boolean>(false)
 	const [predefinedTags, setPredefinedTags] = useState<string[]>([])
+	const [isKol, setIsKol] = useState<boolean>(false)
+	const [token, setToken] = useState<string>("")
+	const [reload, setReload] = useState<number>(0)
+	const [kols, setKols] = useState<KolInfo[]>([])
+	const [myKol, setMyKol] = useState<KolInfo|undefined>(undefined)
+	const [popContent, setPopContent] = useState<string>("become_kol")
 	const t = useTranslations('Login');
-
-	const aiCharacterTags: string[] = ["情感", "历史", "游戏", "婚恋", "科技", "投资", "职业", "音乐", "助手"]
-
-	const awardHead = ()=>{
-		return(
-			<>
-				<GoldFilled style={{fontWeight: "bold", color: "gray", fontSize: 14}}/>
-				<span style={{marginLeft: 5, fontWeight: "bold", color: "gray", fontSize: 12}}>我的勋章</span>
-			</>
-		)
-	}
-
-	const relationshipHead = (title: string)=>{
-		return(
-			<>
-				<ShareAltOutlined style={{fontWeight: "bold", color: "gray", fontSize: 14}}/>
-				<span style={{marginLeft: 5, fontWeight: "bold", color: "gray", fontSize: 12}}>{title}</span>
-			</>
-		)
-	}
-
-	const pad = function(src: Number, size: number) {
-		let s = String(src);
-		while (s.length < (size || 2)) {s = "0" + s;}
-		return s;
-	};
-	const copyToClipboard = async (text: string) => {
-		try {
-			await navigator.clipboard.writeText(text);
-			console.log('Text copied to clipboard');
-		} catch (err) {
-			console.error('Failed to copy text to clipboard: ', err);
-		}
-	};
 
 	useEffect(()=>{
 		command.getPredefinedTags().then((resp)=>{
@@ -83,13 +85,28 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 				setMyTags(res.tags)
 			}
 		})
-	},[activeId]);
+		command.queryPatoKolToken(activeId).then((res)=>{
+			if (res && res.token !== ""){
+				setToken(res.token)
+				setIsKol(true)
+			}
+		})
+		command.query_kol_rooms().then((res) =>{
+			res.forEach((info) =>{
+				setKols(res)
+				if (info.id === activeId) {
+					setMyKol(info)
+				}
+			})
+		})
+	},[activeId, reload]);
 
 	const handleSubmitTags = () => {
 		onShowProgress(true)
 		command.submit_pato_tags(myTags, activeId).then((resp)=>{
-			setAvatar(resp)
+			// setAvatar(resp)
 			onShowProgress(false)
+			setReload(reload+1)
 		})
 	};
 	const handleOpenChange = (newOpen: boolean) => {
@@ -98,7 +115,11 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 
 	return (
 		<header className={styles.header_panel_mobile_container}>
-			<div className={styles.header_user} style={{backgroundImage: cover}}>
+			<div className={styles.header_user} style={{
+				backgroundImage: cover ? `url(${cover})` : undefined,
+				backgroundSize: "cover",
+			}}
+			>
 				<Row align={"middle"}>
 					<Col span={5} style={{textAlign: "center"}}>
 						<img
@@ -125,7 +146,10 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 						{/*}}>{userInfo?.id === undefined ? '' : userInfo?.id.substring(0, 14) + '...' + userInfo?.id.substring(28, 36)}</a>*/}
 					</Col>
 					<Col span={5} style={{textAlign: "end"}}>
-						<QrcodeOutlined style={{fontSize: 36}} onClick={()=>setOpenPanel(true)}/>
+						<QrcodeOutlined style={{fontSize: 36}} onClick={()=> {
+							setPopContent("become_kol")
+							setOpenPanel(true)
+						}}/>
 					</Col>
 				</Row>
 			</div>
@@ -138,18 +162,19 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 					zIndex: 3,
 					position: "absolute",
 					height: 555,
+					width: 370,
 					overflow: "scroll",
-					backgroundImage: "linear-gradient(to bottom, #fff, #eee)"
+					backgroundImage: "linear-gradient(to bottom, #eee, #fff)"
 				}}>
 					<div>
 						<TagsOutlined style={{fontWeight: "bold", color: "#eeb075", fontSize: 14}}/>
-						<span style={{marginLeft: 5, fontWeight: "bold", color: "gray", fontSize: 12}}>我的标签</span>
+						<span style={{marginLeft: 5, fontWeight: "bold", color: "black", fontSize: 12}}>偏好设置</span>
 
 						<Popover
 							placement={"bottom"}
 							content={
-								<div style={{width: 370}}>
-									<TagsComponent height={200} presetTags={myTags} tags={predefinedTags} myTags={(tags) => {
+								<div style={{width: 340}}>
+									<TagsComponent height={300} presetTags={myTags} tags={predefinedTags} myTags={(tags) => {
 										setMyTags(tags)
 									}}/>
 								</div>
@@ -158,53 +183,65 @@ const HeaderPanelMobile = ({activeId, onChangeId, onShowProgress}:
 							open={openPop}
 							onOpenChange={handleOpenChange}
 						>
-							<EditOutlined style={{marginLeft: 20, color: "gray", marginRight: 10}}/>
+							<EditOutlined style={{marginLeft: 20, color: "black", marginRight: 10}}/>
 						</Popover>
 
-						<UploadOutlined onClick={handleSubmitTags} style={{marginLeft: 10, color: "gray", marginRight: 10}}/>
+						<UploadOutlined onClick={handleSubmitTags} style={{marginLeft: 10, color: "black", marginRight: 10}}/>
 					</div>
 					<div style={{padding: 20}}>
-						<TagsComponent presetTags={myTags} height={60} tags={myTags} myTags={(tags) => {
+						<TagsComponent presetTags={myTags} height={100} tags={myTags} myTags={(tags) => {
 							setMyTags(tags)
 						}}/>
 					</div>
 					<Divider/>
-					<div className={styles.info_btn_container}>
-						<div className={styles.info_btn}>
-							<Meta title={awardHead()}/>
-						</div>
-						<div className={styles.info_btn}>
-							<Meta title={relationshipHead("我的粉丝")}/>
-						</div>
-						<div className={styles.info_btn}>
-							<Meta title={relationshipHead("我的关注")}/>
+					<div className={styles.info_container}>
+						<Meta title={awardHead()}/>
+						<div>
+							{isKol && <span style={{color: "#eeb075"}}>KOL</span>}
 						</div>
 					</div>
-					<Divider/>
-					<div className={styles.info_btn_container}>
-						<div className={styles.info_btn}>
-							<Meta title={relationshipHead("充值")}/>
-						</div>
-						<div className={styles.info_btn}>
-							<Meta title={relationshipHead("积分")}/>
-						</div>
-						<div className={styles.info_btn}>
-							<Meta title={relationshipHead("订单")}/>
+					<div className={styles.info_container}>
+						<Meta title={relationshipHead("我的钱包")}/>
+						<div>
+							<PlusOutlined onClick={() => {
+								setPopContent("follow")
+								setOpenPanel(true)
+							}}/>
 						</div>
 					</div>
-					<Divider/>
+					<div className={styles.info_container}>
+						<Meta title={relationshipHead("我的客服")}/>
+						<div style={{width: 200}}></div>
+						<div>
+							{
+								myKol !== undefined &&
+								myKol.followers.map((follower, index) => {
+									return (
+										<span key={index}
+										      style={{color: "#eeb075", fontSize: 12, marginLeft: 5}}>{follower.substring(0, 5)}</span>
+									)
+								})
+							}
+						</div>
+					</div>
 					<Row style={{padding: 10}}>
 						<Col span={24}>
-							<Button style={{width: "100%",backgroundColor: "white",border: "1px solid #eeb075", color:"gray"}} onClick={() => onChangeId(false)}>切换账号</Button>
+							<Button style={{width: "100%", borderRadius: 25, backgroundColor: "white", color: "black"}}
+							        onClick={() => onChangeId(false)}>切换账号</Button>
 						</Col>
 					</Row>
 				</Card>
 			</div>
 			<SlidePanel activeId={activeId} isOpen={openPanel} onClose={() => setOpenPanel(false)}>
-				<QRCodeComponent id={activeId}/>
+				{
+					popContent === "become_kol" &&
+            <QRCodeComponent id={activeId}/>
+				}
+				{/*{*/}
+				{/*	popContent === "follow" &&*/}
+        {/*    <KOLListComponent activeId={activeId} onClose={(token)=>{}} kols={kols}/>*/}
+				{/*}*/}
 			</SlidePanel>
-			<SubscriptionsComponent mobile={false} id={activeId} onClose={() => setShowSubscription(false)}
-			                        visible={showSubscription} onShowProgress={onShowProgress}/>
 		</header>
 	)
 }
